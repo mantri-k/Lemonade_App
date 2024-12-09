@@ -9,7 +9,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -31,6 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -64,10 +67,13 @@ fun LemonJuice(onImageClick: () -> Unit, textLabel: Int, drawableId: Int, descId
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
+            Spacer(modifier = Modifier
+                .height(dimensionResource(R.dimen.padding_vertical)))
+            //.weight(.45f))
             Button(onClick = onImageClick,
                 shape = RoundedCornerShape(size = 0.00092.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                modifier = Modifier.weight(0.75f)
+                modifier = Modifier.weight(1f)
                 ) {
                 Image(
                     painter = painterResource(drawableId),
@@ -80,9 +86,6 @@ fun LemonJuice(onImageClick: () -> Unit, textLabel: Int, drawableId: Int, descId
                         .padding(bottom = 16.dp)
                 )
             }
-            //Spacer(modifier = Modifier
-              //  .height(dimensionResource(R.dimen.padding_vertical))
-                //.weight(.45f))
             Box(modifier = Modifier.wrapContentSize(Alignment.TopCenter)) {
                 Text(
                     text = stringResource(textLabel),
@@ -91,7 +94,7 @@ fun LemonJuice(onImageClick: () -> Unit, textLabel: Int, drawableId: Int, descId
                         textAlign = TextAlign.Center,
                         fontFamily = FontFamily.Default,
                     ),
-                    modifier = Modifier.padding(bottom = 300.dp)
+                    modifier = Modifier.padding(bottom = 200.dp)
                 )
             }
 
