@@ -95,7 +95,7 @@ fun LemonJuice(onImageClick: () -> Unit, textLabel: Int, drawableId: Int, descId
                 Text(
                     text = stringResource(textLabel),
                     style = TextStyle(
-                        fontSize = 22.sp,
+                        fontSize = 24.sp,
                         textAlign = TextAlign.Center,
                         fontFamily = FontFamily.Default,
                     ),
