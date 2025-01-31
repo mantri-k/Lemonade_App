@@ -1,6 +1,7 @@
 package com.example.lemonadeapp
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -43,61 +44,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lemonadeapp.data.DataSource
+import com.example.lemonadeapp.data.Lemonade
 import com.example.lemonadeapp.ui.theme.LemonadeAppTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContent {
             LemonadeAppTheme{
                 LemonadeApp()
             }
-        }
-    }
-}
-
-@Composable
-fun LemonJuice(onImageClick: () -> Unit, textLabel: Int, drawableId: Int, descId: Int) {
-    Box(
-        modifier = Modifier.background(Color.White)
-    ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Spacer(modifier = Modifier
-                .height(dimensionResource(R.dimen.padding_vertical)))
-            //.weight(.45f))
-            Button(onClick = onImageClick,
-                shape = RoundedCornerShape(size = 0.00092.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                modifier = Modifier.weight(1f)
-                ) {
-                Image(
-                    painter = painterResource(drawableId),
-                    contentDescription = stringResource(descId),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize(Alignment.BottomCenter)
-                        .weight(4f)
-                        .size(240.dp)
-                        .padding(bottom = 16.dp)
-                )
-            }
-            Box(modifier = Modifier.wrapContentSize(Alignment.TopCenter)) {
-                Text(
-                    text = stringResource(textLabel),
-                    style = TextStyle(
-                        fontSize = 24.sp,
-                        textAlign = TextAlign.Center,
-                        fontFamily = FontFamily.Default,
-                    ),
-                    modifier = Modifier.padding(bottom = 200.dp)
-                )
-            }
-
         }
     }
 }
@@ -136,52 +101,109 @@ fun LemonadeApp() {
 
         when (currentStep) {
             1 -> {
+                val lemonadeStep = DataSource.combinations[0] // Access the corresponding Lemonade object
+
                 LemonJuice(
                     onImageClick = {
                         currentStep = 2
                         squeezeCount = (2..4).random()
-                    }, textLabel = R.string.lemon_select,
-                    drawableId = R.drawable.lemon_tree,
-                    descId = R.string.first
+                    },
+                    textLabel = lemonadeStep.textId,
+                    drawableId = lemonadeStep.imageId,
+                    descId = R.string.second // Keep this if it's necessary, or update accordingly
                 )
             }
 
             2 -> {
+                val lemonadeStep = DataSource.combinations[1] // Access the corresponding Lemonade object
+
                 LemonJuice(
-                    onImageClick =
-                    {
+                    onImageClick = {
                         squeezeCount--
                         if (squeezeCount == 0) {
                             currentStep = 3
                         }
-                    }, textLabel = R.string.lemon_squeeze,
-                    drawableId = R.drawable.lemon_squeeze,
-                    descId = R.string.second
+                    },
+                    textLabel = lemonadeStep.textId,
+                    drawableId = lemonadeStep.imageId,
+                    descId = R.string.second // Keep this if it's necessary, or update accordingly
                 )
             }
 
             3 -> {
+                val lemonadeStep = DataSource.combinations[2] // Access the corresponding Lemonade object
+
                 LemonJuice(
                     onImageClick = {
                         currentStep = 4
-                    }, textLabel = R.string.lemon_drink,
-                    drawableId = R.drawable.lemon_drink,
-                    descId = R.string.third
+                    },
+                    textLabel = lemonadeStep.textId,
+                    drawableId = lemonadeStep.imageId,
+                    descId = R.string.second // Keep this if it's necessary, or update accordingly
                 )
             }
 
             4 -> {
+                val lemonadeStep = DataSource.combinations[3] // Access the corresponding Lemonade object
+
                 LemonJuice(
                     onImageClick = {
                         currentStep = 1
-                    }, textLabel = R.string.lemon_empty_glass,
-                    drawableId = R.drawable.lemon_restart,
-                    descId = R.string.fourth
+                    },
+                    textLabel = lemonadeStep.textId,
+                    drawableId = lemonadeStep.imageId,
+                    descId = R.string.second // Keep this if it's necessary, or update accordingly
                 )
             }
         }
     }
 }}
+
+@Composable
+fun LemonJuice(
+    onImageClick: () -> Unit, textLabel: Int, drawableId: Int, descId: Int) {
+    Box(
+        modifier = Modifier.background(Color.White)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Spacer(modifier = Modifier
+                .height(dimensionResource(R.dimen.padding_vertical)))
+            //.weight(.45f))
+            Button(onClick = onImageClick,
+                shape = RoundedCornerShape(size = 0.00092.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+                modifier = Modifier.weight(1f)
+            ) {
+                Image(
+                    painter = painterResource(drawableId),
+                    contentDescription = stringResource(descId),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .wrapContentSize(Alignment.BottomCenter)
+                        .weight(4f)
+                        .size(240.dp)
+                        .padding(bottom = 16.dp)
+                )
+            }
+            Box(modifier = Modifier.wrapContentSize(Alignment.TopCenter)) {
+                Text(
+                    text = stringResource(textLabel),
+                    style = TextStyle(
+                        fontSize = 24.sp,
+                        textAlign = TextAlign.Center,
+                        fontFamily = FontFamily.Default,
+                    ),
+                    modifier = Modifier.padding(bottom = 200.dp)
+                )
+            }
+
+        }
+    }
+}
+
 @Preview
 @Composable
 fun LemonPreview() {
