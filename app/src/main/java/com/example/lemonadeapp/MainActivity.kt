@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -34,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -72,6 +75,7 @@ class MainActivity : ComponentActivity() {
 fun LemonadeApp() {
     var currentStep by remember { mutableIntStateOf(1)}
     var squeezeCount by remember {mutableIntStateOf(0)}
+
     Scaffold(
        topBar = {
            CenterAlignedTopAppBar(
@@ -162,46 +166,46 @@ fun LemonadeApp() {
 @Composable
 fun LemonJuice(
     onImageClick: () -> Unit, textLabel: Int, drawableId: Int, descId: Int) {
-    Box(
-        modifier = Modifier.background(Color.White)
+
+    Surface(
+        color = Color.White,
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                //.verticalScroll(rememberScrollState())
         ) {
-            Spacer(modifier = Modifier
-                .height(dimensionResource(R.dimen.padding_vertical)))
-            //.weight(.45f))
-            Button(onClick = onImageClick,
+            Button(
+                onClick = onImageClick,
                 shape = RoundedCornerShape(size = 0.00092.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .wrapContentSize()
+                    .weight(1f)
             ) {
                 Image(
                     painter = painterResource(drawableId),
                     contentDescription = stringResource(descId),
                     modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize(Alignment.BottomCenter)
-                        .weight(4f)
                         .size(240.dp)
                         .padding(bottom = 16.dp)
                 )
             }
-            Box(modifier = Modifier.wrapContentSize(Alignment.TopCenter)) {
-                Text(
-                    text = stringResource(textLabel),
-                    style = TextStyle(
-                        fontSize = 24.sp,
-                        textAlign = TextAlign.Center,
-                        fontFamily = FontFamily.Default,
-                    ),
-                    modifier = Modifier.padding(bottom = 200.dp)
-                )
-            }
-
+            //(modifier = Modifier.wrapContentSize(Alignment.TopCenter)) {
+            Text(
+                text = stringResource(textLabel),
+                style = TextStyle(
+                    fontSize = 24.sp,
+                    textAlign = TextAlign.Center,
+                    fontFamily = FontFamily.Default,
+                ),
+                modifier = Modifier.padding(20.dp)
+                    .weight(.5f)
+            )
         }
     }
+
 }
 
 @Preview
