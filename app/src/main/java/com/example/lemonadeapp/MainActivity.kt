@@ -174,7 +174,7 @@ fun LemonJuice(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly,
             modifier = Modifier
-                //.verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState())
         ) {
             Button(
                 onClick = onImageClick,
@@ -182,7 +182,7 @@ fun LemonJuice(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
                 modifier = Modifier
                     .wrapContentSize()
-                    .weight(1f)
+                    //.weight(1f)
             ) {
                 Image(
                     painter = painterResource(drawableId),
@@ -192,7 +192,6 @@ fun LemonJuice(
                         .padding(bottom = 16.dp)
                 )
             }
-            //(modifier = Modifier.wrapContentSize(Alignment.TopCenter)) {
             Text(
                 text = stringResource(textLabel),
                 style = TextStyle(
@@ -201,7 +200,7 @@ fun LemonJuice(
                     fontFamily = FontFamily.Default,
                 ),
                 modifier = Modifier.padding(20.dp)
-                    .weight(.5f)
+                    //.weight(.5f)
             )
         }
     }
